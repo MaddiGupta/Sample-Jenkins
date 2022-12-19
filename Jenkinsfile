@@ -30,15 +30,31 @@
 //     }
 // }
 
+// pipeline {
+//     agent any
+//     tools {
+//         nodejs 'NodeJs_19.3.0'
+//     }
+//     stages{
+//         stage('Example') {
+//             steps{
+//                 sh 'npm version'
+//             }
+//         }
+//     }
+// }
+
 pipeline {
-    agent any
-    tools {
-        nodejs 'NodeJs_19.3.0'
+    agent {
+        docker {
+            image 'node:lts-bullseye-slim'
+            args '-p 3000:3000'
+        }
     }
-    stages{
-        stage('Example') {
-            steps{
-                sh 'npm version'
+    stages {
+        stage('Build') {
+            steps {
+                sh 'npm install'
             }
         }
     }
